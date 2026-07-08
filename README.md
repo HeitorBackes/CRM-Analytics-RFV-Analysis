@@ -175,23 +175,22 @@ graph TD
 
 ## 📂 Estrutura de Pastas do Projeto
 
-Abaixo está a representação da árvore de diretórios do projeto após a inicialização e configuração do **dbt Core** no ambiente. A organização segue as boas práticas de engenharia de dados, separando as transformações por camadas conceituais (Staging e Analytics):
+Abaixo está a representação da árvore de diretórios do projeto. A organização segue as boas práticas de engenharia de dados, separando as transformações por camadas conceituais (Staging e Analytics):
 
 ```text  
-CRM_Analytics_Project/  
-├── dbt_project.yml          # Arquivo principal de configuração do projeto dbt  
-├── profiles.yml             # Credenciais e configuração de conexão com o BigQuery Sandbox  
-├── models/                  # Diretório contendo todos os modelos SQL de transformação  
-│   ├── staging/             # Camada de Limpeza e Padronização (Materializada como VIEW)  
-│   │   ├── stg_auto_sales.sql  
-│   │   └── schema.yml       # Documentação e testes de consistência da camada staging  
-│   │  
-│   └── analytics/           # Camada Final Dimensional & CRM (Materializada como TABLE)  
-│       ├── dCliente.sql     # Dimensão Cliente (Isolado via QUALIFY)  
-│       ├── dProduto.sql     # Dimensão Produto (Listagem única e preços)  
-│       ├── fPedido.sql      # Fato Pedidos (Métricas transacionais e chaves)  
-│       └── fRFV.sql         # Fato RFV (Cálculo de quintis e segmentos de CRM)  
-│  
-├── seeds/                   # Arquivos CSV estáticos (se houver deparamentos)  
-├── tests/                   # Testes de dados customizados (data assertions)  
-└── macros/                  # Funções e trechos de código SQL reutilizáveis (Jinja)  
+CRM_Analytics/
+├── CRM_Analytics.ipynb          # Script Python (Pandas) para extração e carga de dados
+├── .gitignore                   # Proteção para ocultar chaves de acesso locais (.env)
+├── .env                         # Variáveis de ambiente locais (configurações de chaves)
+├── credentials.json             # Chave da conta de serviço do Google Cloud (BigQuery)
+└── CRM_Analytics_Project/       # Core do dbt para transformações analíticas
+    ├── dbt_project.yml          # Configuração global do projeto dbt
+    └── models/                  # Camadas de modelagem SQL
+        ├── staging/             # Limpeza, casting e padronização dos dados (Views)
+        │   ├── stg_auto_sales.sql
+        │   └── schema.yml       # Testes de consistência e qualidade de dados
+        └── analytics/           # Modelagem dimensional e métricas de CRM (Tabelas)
+            ├── dCliente.sql     # Dimensão de clientes tratados
+            ├── dProduto.sql     # Dimensão de produtos e preços unificados
+            ├── fPedido.sql      # Fato transacional de vendas
+            └── fRFV.sql         # Fato analítico com agrupamento de Recência, Frequência e Valor
