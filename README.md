@@ -140,18 +140,18 @@ As tabelas finais foram materializadas como **TABLES** físicas no BigQuery para
 
 O fluxo completo dos dados, desde a ingestão da fonte primária até a segmentação final, está representado no diagrama abaixo:
 
-```mermaid  
-graph TD  
-    %% Fontes e Ingestão  
-    A[Kaggle API: Auto Sales Data] -->|Script Python / Pandas| B[(BigQuery Raw:<br>ecom_raw.raw_auto_sales)]  
-      
-    %% Camada Staging  
-    B -->|dbt run / Limpeza & Casting| C[stg_auto_sales <br><i>(Camada View)</i>]  
-      
-    %% Camada Dimensional  
-    C -->|QUALIFY + ROW_NUMBER| D[(dCliente <br><i>Dimensão - Tabela</i>)]  
-    C -->|DISTINCT + ROW_NUMBER| E[(dProduto <br><i>Dimensão - Tabela</i>)]  
-    C -->|Métricas e Chaves Estrangeiras| F[(fPedido <br><i>Fato - Tabela</i>)]  
+```mermaid
+graph TD
+    %% Fontes e Ingestão
+    A["Kaggle API: Auto Sales Data"] -->|"Script Python / Pandas"| B[("BigQuery Raw:<br>ecom_raw.raw_auto_sales")]
+
+    %% Camada Staging
+    B -->|"dbt run / Limpeza & Casting"| C["stg_auto_sales <br><i>(Camada View)</i>"]
+
+    %% Camada Dimensional
+    C -->|"QUALIFY + ROW_NUMBER"| D[("dCliente <br><i>Dimensão - Tabela</i>")]
+    C -->|"DISTINCT + ROW_NUMBER"| E[("dProduto <br><i>Dimensão - Tabela</i>")]  
+    C -->|"Métricas e Chaves Estrangeiras"| F[("fPedido <br><i>Fato - Tabela</i>")]  
       
     %% Relacionamentos Star Schema  
     D -->|id_cliente| F  
