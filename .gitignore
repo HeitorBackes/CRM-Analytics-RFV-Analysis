@@ -1,0 +1,21 @@
+# 🔐 SEGURANÇA E CREDENCIAIS (Nunca vão para o GitHub)
+.env
+credentials.json
+*.json.v2
+
+# 🐍 PYTHON E AMBIENTES VIRTUAIS
+.venv/
+venv/
+env/
+__pycache__/
+.ipynb_checkpoints/
+
+# 🛠️ DBT (Pastas geradas automaticamente locais)
+**/target/
+**/logs/
+**/dbt_packages/
+modules/
+
+# 📂 SISTEMA OPERACIONAL
+.DS_Store
+Thumbs.db
