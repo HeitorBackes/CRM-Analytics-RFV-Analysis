@@ -161,7 +161,7 @@ graph TD
     F -->|Agrupamento por Cliente & NTILE | G[(fRFV <br><i>CRM Analytics - Tabela</i>)]  
       
     %% Estilos Visuais  
-    style A fill:#f9f,stroke:#333,stroke-width:1px  
+    style A fill:#005f73,stroke:#333,stroke-width:1px  
     style B fill:#4285F4,stroke:#333,stroke-width:2px,color:#fff  
     style C fill:#FF9900,stroke:#333,stroke-width:1px,color:#000  
     style D fill:#34A853,stroke:#333,stroke-width:2px,color:#fff  
