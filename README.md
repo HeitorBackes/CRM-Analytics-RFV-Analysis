@@ -3,7 +3,7 @@
 Este projeto implementa um pipeline de dados (ELT) de ponta a ponta focado em **CRM Analytics: Matriz RFV** e **Segmentação de Clientes**. O objetivo principal é transformar dados brutos de transações em uma estrutura dimensional otimizada para tomada de decisão e geração de estratégias de marketing direcionadas.
 
 ### 📊 Dashboard Interativo (Power BI)  
-👉 **[Clique aqui para acessar o Relatório no Power BI](INSIRA_AQUI_O_LINK_DO_SEU_POWER_BI)**
+👉 **[Clique aqui para acessar o Relatório no Power BI](https://app.powerbi.com/groups/me/reports/d2094472-0d71-4d1b-b8ff-311623627d7f/9b58c531da6992784e81?experience=power-bi)**
 
 <br>
 
