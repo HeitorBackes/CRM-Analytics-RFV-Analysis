@@ -1,6 +1,3 @@
-
-{{ config(materialized='table') }}
-
 WITH dados_base AS (
     SELECT
         id_cliente,
@@ -20,17 +17,50 @@ metricas_rfv AS (
     GROUP BY id_cliente
 ),
 
+calculo_percentil AS (
+    SELECT
+        id_cliente,
+        recencia,
+        frequencia,
+        valor_total,
+        -- A função PERCENT_RANK cria uma nota de 0.0 a 1.0 e dá a MESMA posição para empates
+        PERCENT_RANK() OVER (ORDER BY recencia DESC) AS rank_r,
+        PERCENT_RANK() OVER (ORDER BY frequencia ASC) AS rank_f,
+        PERCENT_RANK() OVER (ORDER BY valor_total ASC) AS rank_v
+    FROM metricas_rfv
+),
+
 scores_rfv AS (
     SELECT
         id_cliente,
         recencia,
         frequencia,
         valor_total,
-        -- Alterado para NTILE(5) para separar em 5 partes (Quintis)
-        NTILE(5) OVER (ORDER BY recencia DESC) AS r_score,
-        NTILE(5) OVER (ORDER BY frequencia ASC) AS f_score,
-        NTILE(5) OVER (ORDER BY valor_total ASC) AS v_score
-    FROM metricas_rfv
+        -- Converte a posição percentual nos Quintis de 1 a 5 (igual ao PERCENTILEX.INC do DAX)
+        CASE 
+            WHEN rank_r <= 0.20 THEN 1 
+            WHEN rank_r <= 0.40 THEN 2 
+            WHEN rank_r <= 0.60 THEN 3 
+            WHEN rank_r <= 0.80 THEN 4 
+            ELSE 5 
+        END AS r_score,
+        
+        CASE 
+            WHEN rank_f <= 0.20 THEN 1 
+            WHEN rank_f <= 0.40 THEN 2 
+            WHEN rank_f <= 0.60 THEN 3 
+            WHEN rank_f <= 0.80 THEN 4 
+            ELSE 5 
+        END AS f_score,
+        
+        CASE 
+            WHEN rank_v <= 0.20 THEN 1 
+            WHEN rank_v <= 0.40 THEN 2 
+            WHEN rank_v <= 0.60 THEN 3 
+            WHEN rank_v <= 0.80 THEN 4 
+            ELSE 5 
+        END AS v_score
+    FROM calculo_percentil
 ),
 
 calculo_matriz AS (
@@ -60,35 +90,17 @@ segmentacao AS (
         -- Cria o código visual da nova matriz (Ex: '5x5', '3x2')
         CONCAT(CAST(r_score AS STRING), 'x', CAST(media_fv AS STRING)) AS codigo_matriz_rfv,
 
-        -- Aplicação da nova regra de negócio baseada na Matriz R x Média(FV)
+        -- Aplicação da regra de negócio baseada na Matriz R x Média(FV)
         CASE
-            -- VIP: 5x5 e 5x4
             WHEN r_score = 5 AND media_fv IN (4, 5) THEN 'VIP'
-
-            -- Clientes Fiéis: 3x5, 3x4, 4x5, 4x4
             WHEN r_score IN (3, 4) AND media_fv IN (4, 5) THEN 'Clientes Fiéis'
-
-            -- Com Potencial: 4x3, 4x2, 5x3, 5x2
             WHEN r_score IN (4, 5) AND media_fv IN (2, 3) THEN 'Com Potencial'
-
-            -- Novos Clientes: 5x1, 4x1
             WHEN r_score IN (4, 5) AND media_fv = 1 THEN 'Novos Clientes'
-
-            -- Precisam de Atenção: 3x3
             WHEN r_score = 3 AND media_fv = 3 THEN 'Precisam de Atenção'
-
-            -- Prestes a Hibernar: 3x2, 3x1
             WHEN r_score = 3 AND media_fv IN (1, 2) THEN 'Prestes a Hibernar'
-
-            -- Não Pode Perder: 2x5, 1x5
             WHEN r_score IN (1, 2) AND media_fv = 5 THEN 'Não Pode Perder'
-
-            -- Em Risco: 1x4, 2x4, 1x3 + ajuste do 2x3
             WHEN r_score IN (1, 2) AND media_fv IN (3, 4) THEN 'Em Risco'
-
-            -- Hibernando: 2x2, 2x1, 1x2, 1x1
             WHEN r_score IN (1, 2) AND media_fv IN (1, 2) THEN 'Hibernando'
-
             ELSE 'Não Classificado'
         END AS segmento_crm
     FROM calculo_matriz

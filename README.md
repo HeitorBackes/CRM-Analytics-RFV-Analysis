@@ -73,47 +73,47 @@ ORDER BY
 
 Abaixo está a distribuição de clientes por segmento gerada pela consulta no Google BigQuery:
 
-| Posição | Segmento CRM | Total de Clientes | Percentual da Base (%) |  
-| :---: | :--- | :---: | :---: |  
-| 1 | Hibernando | 18 | 20.22% |  
-| 2 | Clientes Fiéis | 16 | 17.98% |  
-| 3 | Com Potencial | 14 | 15.73% |  
-| 4 | Em Risco | 14 | 15.73% |  
-| 5 | VIP | 10 | 11.24% |  
-| 6 | Prestes a Hibernar | 9 | 10.11% |  
-| 7 | Precisam de Atenção | 4 | 4.49% |  
-| 8 | Não Pode Perder | 4 | 4.49% |  
+| Posição | Segmento CRM | Total de Clientes | Percentual da Base (%) |
+| :---: | :--- | :---: | :---: |
+| 1 | Hibernando | 16 | 17.98% |
+| 2 | Clientes Fiéis | 15 | 16.85% |
+| 3 | Com Potencial | 14 | 15.73% |
+| 4 | Em Risco | 14 | 15.73% |
+| 5 | VIP | 11 | 12.36% |
+| 6 | Prestes a Hibernar | 8 | 8.99% |
+| 7 | Não Pode Perder | 6 | 6.74% |
+| 8 | Precisam de Atenção | 5 | 5.62% |
 | **-** | **Total Geral** | **89** | **100.00%** |
 
 ---
 
 ### 💡 Estratégias de CRM recomendadas por Segmento
 
-O mapeamento gerou três grandes planos de ação para o time de Growth Marketing[cite: 3]:
+O mapeamento gerou três grandes planos de ação para o time de Growth Marketing:
 
-#### 1. Retenção da Receita Core (29,22% da base)  
+#### 1. Retenção da Receita Core (29,21% da base)  
 * **Segmentos:** `VIP` e `Clientes Fiéis` (26 clientes no total).  
 * **Cenário:** Clientes que compram com excelente frequência, gastam valores altos e possuem ótima recência. Eles representam quase um terço da carteira e são o motor financeiro e os defensores estáveis do faturamento do negócio.  
 * **Ação Recomendada:** Criar um programa de fidelidade fechado (clube de vantagens), oferecer lançamentos com exclusividade antes do mercado e disponibilizar canais de atendimento prioritários para blindá-los contra a concorrência.
 
-#### 2. Estímulo ao Consumo Ativo (20,22% da base)  
-* **Segmentos:** `Com Potencial` e `Precisam de Atenção` (18 clientes no total).  
+#### 2. Estímulo ao Consumo Ativo (21,35% da base)  
+* **Segmentos:** `Com Potencial` e `Precisam de Atenção` (19 clientes no total).  
 * **Cenário:** Apresentam um ticket médio saudável e histórico de recompra estabelecido, mas o indicador de recência acusa que estão começando a desacelerar o ritmo de visitas ou que têm potencial para comprar mais se estimulados corretamente.  
 * **Ação Recomendada:** Campanhas personalizadas baseadas em produtos complementares ao histórico de compras (*Cross-Selling*), combinadas com gatilhos de urgência ou vantagens progressivas (ex: "ganhe mais pontos na próxima compra").
 
-#### 3. Zona de Recuperação Crítica (50,55% da base)  
-* **Segmentos:** `Não Pode Perder`, `Em Risco`, `Prestes a Hibernar` e `Hibernando` (45 clientes no total).  
-* **Cenário:** É o maior gargalo da operação atual, concentrando metade de toda a base ativa de clientes. São contas que já geraram valor histórico relevante para o negócio, mas estão há muito tempo sem interagir com a plataforma, correndo risco iminente de *Churn* definitivo.  
+#### 3. Zona de Recuperação Crítica (49,44% da base)  
+* **Segmentos:** `Não Pode Perder`, `Em Risco`, `Prestes a Hibernar` e `Hibernando` (44 clientes no total).  
+* **Cenário:** Concentra praticamente metade de toda a base ativa de clientes. São contas que já geraram valor histórico relevante para o negócio, mas estão há muito tempo sem interagir com a plataforma, correndo risco iminente de *Churn* definitivo.  
 * **Ação Recomendada:** Réguas de reativação automatizadas (via e-mail marketing ou WhatsApp integrado via n8n/Make). O foco deve ser o resgate do relacionamento através de ofertas personalizadas de margem controlada ou cupons agressivos de "Sentimos sua falta".
 
 > 💡 **Nota sobre os dados:** Os segmentos *Novos Clientes* e *Promissores* obtiveram contagem zerada nesta fotografia dos dados brutos. Isso indica que a base de clientes analisada é madura e composta majoritariamente por clientes antigos, reforçando a necessidade de focar esforços em campanhas de reativação e pós-venda, mas também na aquisição de novos clientes.
 
 ## 🛠️ Tecnologias e Ferramentas
 
-* **Data Warehouse:** Google Cloud Platform (GCP) - BigQuery  
-* **Transformação e Modelagem:** dbt (Data Build Tool) Core 1.11  
-* **Orquestração/Ambiente:** Python / Google Colab (Virtual Machine)  
-* **Visualização (Próximo Passo):** Power BI / Looker Studio
+* **Data Warehouse:** Google Cloud Platform (GCP) - BigQuery
+* **Transformação e Modelagem:** dbt (Data Build Tool) Core 1.11
+* **Ambiente de Desenvolvimento:** VS Code / Python 3.12 (Ambiente Local)
+* **Visualização de Dados:** Power BI (Cálculos dinâmicos em DAX sincronizados com o DW)
 
 ---
 
@@ -158,7 +158,7 @@ graph TD
     E -->|id_produto| F  
       
     %% Camada Analytics / CRM  
-    F -->|Agrupamento por Cliente & NTILE | G[(fRFV <br><i>CRM Analytics - Tabela</i>)]  
+    F -->|Agrupamento por Cliente & PERCENT_RANK | G[(fRFV <br><i>CRM Analytics - Tabela</i>)]  
       
     %% Estilos Visuais  
     style A fill:#005f73,stroke:#333,stroke-width:1px  
