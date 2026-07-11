@@ -57,7 +57,7 @@ O projeto adota uma abordagem moderna de engenharia de dados:
 
 Após a execução bem-sucedida do pipeline no dbt, a tabela final de inteligência de CRM (`fRFV`) consolidou os dados transacionais e distribuiu os **89 clientes únicos** da base histórica através da matriz de Recência, Frequência e Valor.
 
-Usei está consulta para visualizar a quantidade de clientes por segmento:
+Usei esta consulta para visualizar a quantidade de clientes por segmento:
 
 ```  
 SELECT  
